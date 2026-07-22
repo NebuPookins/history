@@ -1,0 +1,14 @@
+[book]
+title = "Nebu's Summary of History"
+authors = ["Nebu Pookins"]
+language = "en"
+src = "src"
+
+[output.html]
+git-repository-url = "https://github.com/nebupookins/history"
+edit-url-template = "https://github.com/nebupookins/history/edit/main/{path}"
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.html.search]
+enable = true
