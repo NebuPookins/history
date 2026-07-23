@@ -10,7 +10,7 @@ There are different ways of categorizing concepts throughout history, including:
 
 This book will focus primarily on categorization by time period.
 
-In this scheme, history is typically divided into these periods:
+In this scheme, history is typically divided into four periods:
 
 - Prehistory
 - Ancient history
