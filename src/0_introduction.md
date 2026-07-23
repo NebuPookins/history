@@ -53,3 +53,28 @@ timeline
     : Democracy
     : World Wars
 ```
+
+```flashcard
+front: Approximately when would Christopher Columbus have first arrived in America?
+back: During the transition between post-classical history and modern history. 1492, to be precise.
+```
+
+```flashcard
+front: Approximately when would the Bronze Age have occurred?
+back: In early ancient history, starting from around 3000 BCE to around 300 BCE, depending on the region.
+```
+
+```flashcard
+front: Approximately when would the humans have first worked with gold?
+back: Prehistory. Depending on what is meant by "worked with", evidence of "free" or "natural" gold use dates as far back as 40,000 BCE. Gold artifacts (which would have required smelting) date as far back as 4,600 BCE in Bulgaria.
+```
+
+```flashcard
+front: Approximately what period of time is described in the Hebrew Bible (Old Testament)?
+back: Ancient history. Creation is roughly dated to 4000 BCE, the great flood around 2300BC, the exodus from Egypt around 1400 BCE.
+```
+
+```flashcard
+front: Approximately when was papyrus first used for writing?
+back: Ancient history, around 2500 BCE, in Egypt.
+```
