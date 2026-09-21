@@ -19,27 +19,44 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;");
 }
 
-// Parses simple "key: value" lines inside a flashcard block.
-// Splitting on the FIRST colon only, so values may safely contain
-// their own colons (e.g. "front: What time is 3:00 in 24hr format?").
+// Parses simple "key: value" lines inside a flashcard block, where a value
+// may continue onto following lines (e.g. a multi-sentence "back"). A line
+// starts a new field only if the text before its first colon is one of the
+// known field names; otherwise it's treated as a continuation of the current
+// field, so values (and their continuation lines) may safely contain their
+// own colons (e.g. "front: What time is 3:00 in 24hr format?" or a
+// continuation line like "Note: this is disputed by some historians.").
+const KNOWN_FIELDS = new Set(["front", "back", "url"]);
+
 function parseFlashcardBlock(body) {
   const fields = {};
+  let currentKey = null;
   body.split("\n").forEach((line) => {
     const idx = line.indexOf(":");
-    if (idx === -1) return;
-    const key = line.slice(0, idx).trim().toLowerCase();
-    const value = line.slice(idx + 1).trim();
-    if (key) fields[key] = value;
+    const candidateKey = idx === -1 ? "" : line.slice(0, idx).trim().toLowerCase();
+    if (idx !== -1 && KNOWN_FIELDS.has(candidateKey)) {
+      fields[candidateKey] = line.slice(idx + 1).trim();
+      currentKey = candidateKey;
+    } else if (currentKey) {
+      const trimmed = line.trim();
+      if (trimmed !== "") fields[currentKey] += "\n" + trimmed;
+    }
   });
   return fields;
 }
 
+function toHtmlLines(escapedStr) {
+  return escapedStr.replace(/\n/g, "<br>");
+}
+
 function renderFlashcard(fields) {
   const url = fields.url || "";
-  const front = escapeHtml(fields.front || "");
-  const back = escapeHtml(fields.back || "");
+  const frontEscaped = escapeHtml(fields.front || "");
+  const backEscaped = escapeHtml(fields.back || "");
+  const front = toHtmlLines(frontEscaped);
+  const back = toHtmlLines(backEscaped);
   const imgTag = url
-    ? `<img src="${escapeHtml(url)}" alt="${front}">`
+    ? `<img src="${escapeHtml(url)}" alt="${frontEscaped}">`
     : "";
 
   return `<div class="flashcard">
