@@ -18,6 +18,12 @@
   transform: rotateY(180deg);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .flashcard-inner {
+    transition: none;
+  }
+}
+
 .flashcard:focus-visible {
   outline: 2px solid var(--links, #4183c4);
   outline-offset: 4px;
