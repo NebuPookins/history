@@ -74,7 +74,9 @@ ${imgTag}
 }
 
 // Matches ```flashcard ... ``` fenced blocks, non-greedy across lines.
-const FLASHCARD_FENCE = /```flashcard\r?\n([\s\S]*?)```/g;
+// Trailing spaces/tabs after "flashcard" (a common copy-paste artifact) are
+// tolerated so such blocks aren't silently left as unrendered code fences.
+const FLASHCARD_FENCE = /```flashcard[ \t]*\r?\n([\s\S]*?)```/g;
 
 function processContent(content) {
   return content.replace(FLASHCARD_FENCE, (_match, body) => {

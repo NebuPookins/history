@@ -72,6 +72,13 @@ test("processContent replaces a flashcard fence with rendered HTML", () => {
   assert.ok(!out.includes("```flashcard"));
 });
 
+test("processContent tolerates trailing whitespace after the opening fence's language tag", () => {
+  const md = "```flashcard   \nfront: Q?\nback: A.\n```";
+  const out = processContent(md);
+  assert.ok(out.includes('class="flashcard"'));
+  assert.ok(!out.includes("```flashcard"));
+});
+
 test("processContent leaves content without flashcard fences untouched", () => {
   const md = "# Title\n\nsome text";
   assert.equal(processContent(md), md);
