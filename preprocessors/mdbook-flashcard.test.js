@@ -79,6 +79,33 @@ test("processContent tolerates trailing whitespace after the opening fence's lan
   assert.ok(!out.includes("```flashcard"));
 });
 
+test("processContent only ends a flashcard at a closing fence on its own line", () => {
+  const md = "```flashcard\nfront: Q?\nback: Written as ```x``` in Markdown.\n```\n\nafter";
+  const out = processContent(md);
+  assert.ok(out.includes("Written as ```x``` in Markdown."));
+  assert.ok(out.endsWith("</div>\n\nafter"));
+});
+
+test("processContent doesn't let a card closed mid-line swallow the content after it", () => {
+  const md = "```flashcard\nfront: QA?\nback: AA.```\n\nMiddle paragraph.\n\n```flashcard\nfront: QB?\nback: AB.\n```";
+  const out = processContent(md);
+  assert.ok(out.includes("Middle paragraph."));
+  assert.ok(out.includes("QA?"));
+  assert.ok(out.includes('<p class="flashcard-question">QB?</p>'));
+});
+
+test("processContent accepts CRLF line endings including the closing fence", () => {
+  const md = "```flashcard\r\nfront: Q?\r\nback: A.\r\n```\r\nafter";
+  const out = processContent(md);
+  assert.ok(out.includes('<p class="flashcard-answer">A.</p>'));
+  assert.ok(!out.includes("```"));
+});
+
+test("processContent ignores a flashcard fence that doesn't start its line", () => {
+  const md = "Write cards with a ```flashcard\nfence, closed by ```.";
+  assert.equal(processContent(md), md);
+});
+
 test("processContent leaves content without flashcard fences untouched", () => {
   const md = "# Title\n\nsome text";
   assert.equal(processContent(md), md);

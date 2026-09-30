@@ -76,7 +76,11 @@ ${imgTag}
 // Matches ```flashcard ... ``` fenced blocks, non-greedy across lines.
 // Trailing spaces/tabs after "flashcard" (a common copy-paste artifact) are
 // tolerated so such blocks aren't silently left as unrendered code fences.
-const FLASHCARD_FENCE = /```flashcard[ \t]*\r?\n([\s\S]*?)```/g;
+// As in Markdown, both fences must sit on their own lines, so a "```" inside
+// a field value doesn't end the card early. The body may not cross another
+// fence line, so a malformed card (e.g. closed at the end of its last line)
+// stays visible as a code block instead of swallowing the content after it.
+const FLASHCARD_FENCE = /^[ \t]*```flashcard[ \t]*\r?\n((?:(?![ \t]*```)[^\n]*\n)*)[ \t]*```[ \t]*\r?$/gm;
 
 function processContent(content) {
   return content.replace(FLASHCARD_FENCE, (_match, body) => {
