@@ -12,7 +12,13 @@
     // after the question, revealing it before the user can attempt recall.
     const front = card.querySelector(".flashcard-front");
     const back = card.querySelector(".flashcard-back");
-    if (back) back.setAttribute("aria-hidden", "true");
+    if (back) {
+      back.setAttribute("aria-hidden", "true");
+      // A long answer makes the back face a scroll container, which some
+      // browsers add to the tab order on their own; the card itself is
+      // the only intended focus target.
+      back.setAttribute("tabindex", "-1");
+    }
 
     function toggle() {
       const flipped = card.classList.toggle("is-flipped");
